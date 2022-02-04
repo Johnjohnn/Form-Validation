@@ -6,22 +6,58 @@ const message = document.getElementById("message");
 
 
 let isValid = false;
+let passwordsMatch = false;
 
 function validateForm() {
     // Using Contraint API
     isValid = form.checkValidity();
     // Style main message for an error
-    message.textContent = "Please fill out all fields."
+    if(!isValid){
+        message.textContent = "Please fill out all fields."
     message.style.color  = "red";
     messageContainer.style.borderColor = 'red';
+    return;
+}
+ // Check to see if the passwords match 
+ if (password1El.value === password2El.value){
+     passwordsMatch = true;
+     password1El.style.borderColor = "green";
+     password2El.style.borderColor = "green";
+ }else {
+     passwordsMatch = false;
+     message.textContent ="Make sure the passwords match";
+     message.style.color = "red";
+     password1El.style.borderColor = "red";
+     password2El.style.borderColor = "red";
+     return;
+ }
+ // If form is valid and passwords match 
+ if (isValid && passwordsMatch) {
+     message.textContent = "Successfully Registered";
+     messageContainer.style.borderColor = 'green';
+ }
+    }
+function storeFormData(){
+    const user = {
+        name: form.name.value, 
+        phone: form.phone.value,
+        email: form.email.value,
+        website: form.website.value,
+        password: form.password.value
+    }
+    // Do something with user Data
 }
 
 function processFormData(e) {
     e.preventDefault()
     // Validate Form 
     validateForm()
+    // Subit Data if Valid 
+    if(isValid && passwordsMatch){
+        storeFormData();
+    }
 }
 
 // Event Listener; 
 
-form.addEventListener("submite", processFormData);
+form.addEventListener("submit", processFormData);
